@@ -34,7 +34,7 @@ class WAAG extends Component<any, WAAGState> {
     const symbols = ' .:-=+*#%@';
     this.state = {
       symbols: symbols,
-      fontSize: 10,
+      fontSize: 6,
       cols: { value: 40, override: false },
       rows: { value: 40, override: false },
       preserveAspect: true,
@@ -49,7 +49,6 @@ class WAAG extends Component<any, WAAGState> {
     const { cols, rows, symbols, ready, art, preserveAspect, fontSize } = this.state;
     const image = this._image;
     return <>
-      <div className='container'>
         <div className='fields'>
           <div className='field image'>
             <label>Image</label>
@@ -97,7 +96,6 @@ class WAAG extends Component<any, WAAGState> {
                     onDrop={e => this.updateFile(e)}
           />
         </div>
-      </div>
     </>;
   }
 
@@ -179,13 +177,16 @@ class WAAG extends Component<any, WAAGState> {
     const textArea = safeElement(this._artAreaRef);
     if (!this._resizing && e.length > 0 && e[0].target === textArea && (!this.state.cols.override || !this.state.rows.override)) {
       const size = this.artAreaSize();
+      let updated = false;
       this.setState(current => {
           const res = { ...current };
           if (!current.cols.override && size[0] !== current.cols.value) res.cols = { override: false, value: size[0] };
           if (!current.rows.override && size[1] !== current.rows.value) res.rows = { override: false, value: size[1] };
-          if (current.cols !== res.cols || current.rows !== res.rows)
-            this.generate();
-        }, () => this._resizing = false
+          updated = current.cols !== res.cols || current.rows !== res.rows;
+        }, () => {
+          this._resizing = false;
+        if (updated) this.generate();
+        }
       );
     }
   }
@@ -257,8 +258,6 @@ function isDragEvent(e: SyntheticEvent): e is DragEvent {
   return !!(e as Partial<DragEvent>).dataTransfer;
 }
 
-ReactDOM.render(<WAAG />, document.body);
-
 function generate(image: ImageLuminance, palette: Palette, size: [number, number]): string {
   const { width, height } = image;
   const [cols, rows] = size;
@@ -283,3 +282,6 @@ function safeElement<T extends Element>(e: RefObject<T>): T {
   if (e.current) return e.current;
   throw new Error('No element');
 }
+
+ReactDOM.render(<WAAG />, document.getElementById('waag'));
+

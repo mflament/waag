@@ -40,27 +40,6 @@ export class ImageLuminance {
     return total / count;
   }
 
-  draw(context: CanvasRenderingContext2D, rect: Rect = {
-    x: 0,
-    y: 0,
-    width: this.width,
-    height: this.height
-  }): void {
-    const maxX = Math.min(rect.x + rect.width, this.width);
-    const maxY = Math.min(rect.y + rect.height, this.height);
-    const width = Math.ceil(rect.width);
-    const height = Math.ceil(rect.height);
-    const data = new Uint8ClampedArray(width * height * 4);
-    for (let y = rect.y; y < maxY; y++) {
-      for (let x = rect.x; x < maxX; x++) {
-        const l = this.get(x, y);
-        const offset = (Math.floor(y) * width + Math.floor(x)) * 4;
-        data[offset] = data[offset + 1] = data[offset + 2] = l * 255;
-        data[offset + 3] = 255;
-      }
-    }
-    context.putImageData(new ImageData(data, width, height), 0, 0);
-  }
 }
 
 function mix(a: number, b: number, f: number): number {

@@ -1,17 +1,12 @@
-import { eslint } from 'rollup-plugin-eslint';
-
 import typescript from 'rollup-plugin-typescript2';
-import tstreeshaking from 'rollup-plugin-ts-treeshaking';
-import nodeResolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
-import replace from '@rollup/plugin-replace';
+import eslint from '@rollup/plugin-eslint';
+import externalGlobals from 'rollup-plugin-external-globals';
 import { terser } from 'rollup-plugin-terser';
-
-const env = 'production';
 
 export default [
   {
     input: ['./src/index.tsx'],
+    external: ['react', 'react-dom'],
     output: {
       dir: 'dist',
       format: 'esm',
@@ -19,15 +14,12 @@ export default [
       plugins: [terser()]
     },
     plugins: [
-      commonjs(),
-      nodeResolve(),
-      replace({
-        'process.env.NODE_ENV': env,
-        preventAssignment: true
-      }),
-      eslint({ ignore: false, exclude: ['react-esm/**'] }),
+      eslint(),
       typescript(),
-      tstreeshaking()
+      externalGlobals({
+        'react': 'React',
+        'react-dom': 'ReactDOM'
+      })
     ]
   }
 ];
