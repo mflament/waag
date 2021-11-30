@@ -1,0 +1,60 @@
+html,
+body,
+div,
+p,
+ul,
+li {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  padding: 10px;
+
+  .fields {
+    display: flex;
+    flex-flow: row;
+    gap: 0.5em;
+    align-items: center;
+    flex-wrap: wrap;
+
+    .field {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      column-gap: 5px;
+      flex: 0;
+
+      label {
+        flex: 0;
+        font-weight: bold;
+      }
+
+      input[type='number'] {
+        width: 3em;
+      }
+
+    }
+
+    .image img {
+      width: 40px;
+      cursor: pointer;
+    }
+  }
+
+  .art {
+    margin-top: 20px;
+
+    textarea {
+      padding: 0;
+      white-space: pre;
+      overflow: scroll;
+    }
+  }
+
+}
+
+.hidden {
+  display: none;
+}
