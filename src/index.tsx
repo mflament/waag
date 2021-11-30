@@ -34,8 +34,8 @@ class WAAG extends Component<any, WAAGState> {
     const symbols = ' .:-=+*#%@';
     this.state = {
       symbols: symbols,
-      fontSize: 6,
-      cols: { value: 40, override: false },
+      fontSize: 8,
+      cols: { value: 80, override: false },
       rows: { value: 40, override: false },
       preserveAspect: true,
       ready: true,
